@@ -12,7 +12,7 @@ blockly开发笔记
 *  media(文件夹)
 *  blockly_compressed.js
 *  blocks_compressed.js
-*  
+*  python_compressed.js
 
 # 内容
 *  hello world
