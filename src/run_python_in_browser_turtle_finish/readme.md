@@ -118,7 +118,7 @@ SHAPES.arrow    = [[-10,0],[10,0],[0,10]];
 # tips
 *  media可以用`https://blockly-demo.appspot.com/static/media/`
 *  trinket.io还可以把项目下载为本地python代码运行
-
+*  完整的默认库参考: https://blockly-demo.appspot.com/static/demos/code/index.html
 
 
 # 高阶
