@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Fixed Blockly</title>
+  <script src="../../blockly_compressed.js"></script>
+  <script src="../../blocks_compressed.js"></script>
+  <script src="../../python_compressed.js"></script>
+  <script src="../../msg/js/en.js"></script>
+  
+  <!--for skulpt and turtle href:http://www.skulpt.org/ -->
+  <script src="./jquery.min.js" type="text/javascript"></script> <!--1.9.0-->
+  <script src="./skulpt.min.js" type="text/javascript"></script>  <!-- http://www.skulpt.org/static/ -->
+  <script src="./skulpt-stdlib.js" type="text/javascript"></script> 
+
+
+  <script src="./my_blocks.js" type="text/javascript"></script> 
+  <!--引入自己的blocks-->
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+    <a href="../index.html">Demos</a> &gt; Fixed Blockly</h1>
+
+  <p>This is a simple demo of injecting Blockly into a fixed-sized 'div' element.</p>
+
+  <p>&rarr; More info on <a href="https://developers.google.com/blockly/guides/configure-blockly/web/fixed-size">injecting fixed-sized Blockly</a>&hellip;</p>
+
+  <p>
+    <button onclick="showCode()">Show Python</button>
+    <!-- <button onclick="runCode()">Run Python</button> -->
+    <button type="button" onclick="runit()">Run</button> 
+  </p>
+
+  <pre id="output" ></pre> 
+  <!-- If you want turtle graphics include a canvas -->
+  <div style="float:right" id="code_editor">
+  <h3>Try This</h3> 
+    <form> 
+    <textarea id="yourcode" cols="40" rows="10">
+import turtle
+t = turtle.Turtle()
+t.forward(100)
+print("Hello World")
+    </textarea><br /> 
+    <button type="button" onclick="runit_editor()">Run</button> 
+    </form> 
+  </div> 
+
+  <div style="float:right" id="mycanvas"></div> 
+
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+
+  <xml id="toolbox" style="display: none">
+    <!--硬编码比较丑-->
+    <category name="Turtle">
+      <block type="draw_move"></block>
+      <block type="draw_turn"></block>
+      <block type="draw_shape"></block>
+      <block type="draw_pen"></block>
+      <block type="draw_color"></block>
+      <block type="draw_write"></block>
+      <block type="draw_circle"></block>
+      <block type="draw_stamp"></block>
+      <block type="begin_fill"></block>
+      <block type="end_fill"></block>
+      <block type="goto"></block>
+      <block type="draw_speed"></block>
+      <block type="draw_pos"></block>
+    </category>
+    <category name="others">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="controls_repeat_ext"></block>
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="text"></block>
+      <block type="text_print"></block>
+      <block type="draw_move"></block>
+      <block type="draw_turn"></block>
+    </category>
+    
+  </xml>
+
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        { media: '../../media/',
+          toolbox: document.getElementById('toolbox')}
+        );
+
+
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      // Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.Python.workspaceToCode(demoWorkspace);
+      console.log(code);
+      alert(code)
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      /*
+       window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      */
+      var code = Blockly.Python.workspaceToCode(demoWorkspace);
+      // Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      /*
+      try {
+        eval(code);
+      } catch (e) {
+        alert(e);
+      }
+      */
+    }
+
+    function outf(text) { 
+        var mypre = document.getElementById("output"); 
+        mypre.innerHTML = mypre.innerHTML + text; 
+    }
+
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+
+    function runit() { 
+       // var prog = document.getElementById("yourcode").value; 
+       var prog = Blockly.Python.workspaceToCode(demoWorkspace); // 使用一个机制强行附值执行 
+       window.prog = prog
+       // if(window.code){prog=window.code}; //如果存在window.code，则使用这个值，在调试时用
+       // window.code="import turtle;t = turtle.Turtle();t.forward(100);"
+       // python to one line
+       var mypre = document.getElementById("output"); 
+       mypre.innerHTML = ''; 
+       Sk.pre = "output";
+       Sk.configure({output:outf, read:builtinRead}); 
+       (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+       var myPromise = Sk.misceval.asyncToPromise(function() {
+           return Sk.importMainWithBody("<stdin>", false, prog, true);
+       });
+       myPromise.then(function(mod) {
+           console.log('success');
+       },
+           function(err) {
+           console.log(err.toString());
+       });
+    } 
+
+    function runit_editor() { 
+       var prog = document.getElementById("yourcode").value; 
+       // var prog = Blockly.Python.workspaceToCode(demoWorkspace); // 使用一个机制强行附值执行 
+       window.prog = prog
+       // if(window.code){prog=window.code}; //如果存在window.code，则使用这个值，在调试时用
+       // window.code="import turtle;t = turtle.Turtle();t.forward(100);"
+       // python to one line
+       var mypre = document.getElementById("output"); 
+       mypre.innerHTML = ''; 
+       Sk.pre = "output";
+       // url
+       //Sk.imageProxy = "https://trinket.io/proxy/https://trinket-user-assets.trinket.io/02b81dd84f5006e360288e728d69cdd60aeec160-552d25d3d1570f876e1cb766.png"
+       
+       Sk.configure({output:outf, read:builtinRead}); 
+       (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+       // Sk.TurtleGraphics.target
+       // Sk.TurtleGraphics.assets = "https://trinket-user-assets.trinket.io/02b81dd84f5006e360288e728d69cdd60aeec160-552d25d3d1570f876e1cb766.png"
+       var myPromise = Sk.misceval.asyncToPromise(function() {
+           return Sk.importMainWithBody("<stdin>", false, prog, true);
+       });
+       myPromise.then(function(mod) {
+           console.log('success');
+       },
+           function(err) {
+           console.log(err.toString());
+       });
+    } 
+
+
+  </script>
+
+</body>
+</html>
