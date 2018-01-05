@@ -20,6 +20,8 @@ pxt与pxt-microbit的文档
 
 使用[pkg](https://github.com/zeit/pkg)上传到github gh.更多细节参考:[这儿](https://github.com/Microsoft/pxt-sample/blob/master/README.md#todos)
 
+关于该项目的更多探索参考[wwj718/pxt-sample](https://github.com/wwj718/pxt-sample)
+
 ### 安装pxt-microbit
 
 #### 快速开始(非开发环境)
@@ -56,6 +58,32 @@ pxt serve
 使用这种工具做教程，可以避免反复的截图
 
 https://github.com/Microsoft/pxt/blob/master/docs/writing-docs.md
+
+#### 文档工具的问题
+对文档做的修改不会生效
+
+原因: `pxtlib.js`（位于`built/packaged/pxtlib.js`）中硬编码了`Cloud.apiRoot = "https://www.pxt.io/api/";`(8002行)
+
+这部分和cloud配置相关
+
+从pxt-microbit/built/packaged中 ，`ack "www.pxt.io"`得出上述原因. 而pxtlib.js在`sim/public/siminstructions.html`中引入
+
+`https://www.pxt.io/api/md/microbit/blocks?targetVersion=local&lang=zh-CN&live=1` 返回的是markdown
+
+
+本地运行的: `https://www.pxt.io/api/md/microbit/docs/blocks.html?targetVersion=0.0.0&lang=zh-CN&live=1`   因为全部编译到本地了
+
+修改 Cloud.apiRoot. 需要定制 `pxtlib`
+
+built/packaged/main.js中有
+
+```
+    var hm = /^(https:\/\/[^/]+)/.exec(window.location.href);
+    if (hm)
+        Cloud.apiRoot = hm[1] + "/api/";
+```
+
+内联的文档都从这里读取(pxt-sample正常)
 
 
 
