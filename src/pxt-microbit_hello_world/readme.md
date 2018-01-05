@@ -1,4 +1,29 @@
 # readme
+pxt与pxt-microbit的文档
+
+# 开始
+
+### pxt入手(从这里开始)
+[pxt-sample](https://github.com/Microsoft/pxt-sample)
+
+[pxtarget文档](https://makecode.com/targets/pxtarget)  
+
+成果: 修改docs,生效!
+
+
+最终编译为纯静态文件:[microsoft.github.io/pxt-sample](https://microsoft.github.io/pxt-sample/)
+
+对应仓库为:[pxt-sample/tree/gh-pages](https://github.com/Microsoft/pxt-sample/tree/gh-pages)
+
+
+问题：如何build为纯静态文件
+
+使用[pkg](https://github.com/zeit/pkg)上传到github gh.更多细节参考:[这儿](https://github.com/Microsoft/pxt-sample/blob/master/README.md#todos)
+
+### 安装pxt-microbit
+
+#### 快速开始(非开发环境)
+
 ```
 npm install -g pxt
 mkdir microbit
@@ -11,29 +36,30 @@ pxt serve
 
 参考 ：https://makecode.com/cli
 
-# 开始
-
-
-### 开发环境
+#### pxt-microbit开发环境
 https://github.com/Microsoft/pxt-microbit
 
-需要yotta
 
 安装yotta.app
+
 alias yotta="/Applications/yotta.app/Contents/MacOS/yotta"
 
 目录： /Users/wwj/mylab/just4fun/pxt-microbit
 
-pxt serve --noBrowser
+pxt help
+
+pxt serve
 
 
-### pxt提供了文档工具，避免截图
+### pxt提供了文档工具（
+
+使用这种工具做教程，可以避免反复的截图
+
 https://github.com/Microsoft/pxt/blob/master/docs/writing-docs.md
 
 
-# 入手
-https://github.com/Microsoft/pxt-sample
 
-https://makecode.com/targets/pxtarget  
 
-修改docs
+
+
+
