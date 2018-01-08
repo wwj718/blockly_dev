@@ -6,5 +6,15 @@
 	<div>Test</div>
 	<div id="blocks"></div>
 	<script src="scratch-block-test.js"></script>
+    <script src="python_compressed.js"></script>
+    
+    <script type="text/javascript">
+//定义好收集的代码
+Blockly.Python.control_if = function(a) {
+    Blockly.Python.definitions_.import_turtle = "import turtle\nturtle=turtle.Turtle()";
+    var b = Blockly.Python.valueToCode(a, "VALUE", Blockly.Python.ORDER_NONE) || "0";
+    return "turtle." + a.getFieldValue("DIR") + "(" + b + ")\n"
+};
+    </script>
 </body>
 </html>

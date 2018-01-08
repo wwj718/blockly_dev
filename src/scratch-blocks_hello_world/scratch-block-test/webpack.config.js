@@ -34,7 +34,8 @@ module.exports = [
     Object.assign({}, base, {
         target: 'web',
         entry: {
-            'scratch-block-test': './src/scratch-block-test.js'
+            'scratch-block-test': './src/scratch-block-test.js',
+            'python_compressed': './src/python_compressed.js'
         },
         output: {
             path: path.resolve(__dirname, 'dist'),

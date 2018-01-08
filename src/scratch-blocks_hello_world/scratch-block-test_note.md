@@ -10,8 +10,6 @@ cd doc.advent.scratch30
 cd scratch-block-test
 npm install  # 慢!
 
-# 问题: media是目录不存在
-
 # 是build
 webpack 
 cd dist
@@ -24,7 +22,10 @@ webpack-dev-server
 
 ```
 
+# generate python
+Blockly.Python.workspaceToCode(workspace)
 
+注意看`scratch-block-test.js` 中的全局变量
 
 # todo
 驱动cozmo 使用remote_control
