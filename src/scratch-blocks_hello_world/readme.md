@@ -11,9 +11,11 @@ npm install --registry https://registry.npm.taobao.org
 
 cd gh-pages/playgrounds/tests/
 # open vertical_playground.html #完整路径 scratch-blocks/gh-pages/playgrounds/tests/vertical_playground.html
+
+# generate python
+# 在/Users/wwj/mylab/changxue/scratch-blocks可行
 ```
 
-注意:当前目录下的index.html不可以使用！
 
 
 # 问题
