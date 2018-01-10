@@ -5,6 +5,85 @@
 *  序列
 *  接受输入
 *  有返回值
+*  包装其他系列作为输入
+
+
+### 序列
+
+### 接受输入
+
+```
+//sleep
+
+//输入为数字的模块
+//https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ytviqi
+//https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#8vwuu3
+//https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ndieuv 图标
+
+
+  Blockly.Blocks['time_sleep'] = {
+      init: function() {
+          this.appendDummyInput()
+              .appendField(new Blockly.FieldImage(require('./media/hexinchulichuanshu/time_sleep.png'),40,40,"*"))
+              .appendField("休眠时间")
+              .appendField(new Blockly.FieldNumber(1, 0), "mytime");
+          this.setInputsInline(true);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(170);
+          this.setTooltip('');
+          this.setHelpUrl('http://www.example.com/');
+      }
+  }
+
+  Blockly.Python['time_sleep'] = function(block) {
+      var number_mytime = block.getFieldValue('mytime');
+      // TODO: Assemble Python into code variable.
+
+      var code = `import time;time.sleep(${number_mytime})\n`;
+      return code;
+  };
+```
+
+### 有返回值
+
+```
+//只有输出的块：获取障碍物距离（
+
+//https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#a88ugi 完整版
+
+//https://developers.google.com/blockly/guides/configure/web/code-generators
+//https://developers.google.com/blockly/guides/create-custom-blocks/generating-code
+// https://github.com/google/blockly/blob/master/generators/python/math.js  实际例子,跟踪：math_number
+
+  Blockly.Blocks['get_distance'] = {
+      init: function() {
+          this.appendDummyInput()
+              .appendField(new Blockly.FieldImage(require('./media/chuanganqi/get_distance.png'),40,40,"*"))
+              .appendField("获取障碍物距离");
+          this.setOutput(true, "Number");
+          this.setColour(110);
+          // this.setTooltip('');
+          // this.setHelpUrl('http://www.example.com/');
+      }
+  };
+
+
+  Blockly.Python['get_distance'] = function(block) {
+      // distance 全局,得到的是代码，需要代码编译完才是想要的,赋值给变量
+
+      var code = 'distance.get_distance()';
+      // 这里有个层次的问题，如何获得另一个语言里的变量,如何输出为数字
+
+      // 硬件的输出如何变为一个块 可被其他读取,并没有对接到其他部分,不能是python代码
+
+      // TODO: Change ORDER_NONE to the correct strength.
+
+      // 需要回传数值，用于变量
+
+      return [code, Blockly.Python.ORDER_ATOMIC];
+  };
+```
 
 # 工具
 构建工具: [blockfactory](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html)
