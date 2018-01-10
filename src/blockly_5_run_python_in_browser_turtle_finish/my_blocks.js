@@ -221,8 +221,8 @@ Blockly.Blocks.draw_pos = {
     }
 },
 Blockly.Python.draw_pos = function(a) {
-    return Blockly.Python.definitions_.import_turtle = "import turtle\nturtle=turtle.Turtle()",
-    ["turtle.pos()", Blockly.Python.ORDER_ATOMIC]
+    Blockly.Python.definitions_.import_turtle = "import turtle\nturtle=turtle.Turtle()";
+    return ["turtle.pos()", Blockly.Python.ORDER_ATOMIC]
 }
 
 /*
