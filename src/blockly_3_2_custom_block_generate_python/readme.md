@@ -4,14 +4,21 @@
 # 模块分类
 *  序列
 *  接受输入
+  *  接受的类型
 *  有返回值
+  *  返回值类型
 *  包装其他系列作为输入
 
+关于积木块怎么定义参考:[Define Blocks](https://developers.google.com/blockly/guides/create-custom-blocks/define-blocks)
+
+使用json可逆，更清晰
 
 ### 序列
 摘自`blockly_5_run_python_in_browser_turtle_finish` 中的`my_blocks.js`
 
 该模块的功能是在turtle中，留下一个印记。无输入和函数输出。(副作用)
+
+[blockfactory draw_stamp](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ixsmmd)
 
 ```
   Blockly.Blocks.draw_stamp = {
@@ -151,8 +158,20 @@
 
 剩下的就是type问题，是否可以组合
 
-### 难点
+# 难点
+### Operator Precedence
 [Operator Precedence](https://developers.google.com/blockly/guides/create-custom-blocks/)
 
 >  Still don't understand? No problem. Just use ORDER_ATOMIC as the order on every call to valueToCode, and use ORDER_NONE as the order for the final return statement on every value block. The resulting code will be infested with needless parentheses, but is guaranteed to be correct.
+
+### 块范例
+[Custom Blocks: Block Paradigms](https://developers.google.com/blockly/guides/create-custom-blocks/block-paradigms)
+
+并行块
+
+>   If the target language is something like Python, then the allCode array may be assembled into a single program that uses a threading module.
+
+事件驱动
+
+Blockly.BlockSvg.START_HAT = true
 
