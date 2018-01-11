@@ -37,6 +37,8 @@ Blockly.Python.draw_turn = function(a) {
 // import turtle\nturtle=turtle.Turtle();t = turtle.Turtle();t.forward(100);
 */
 
+//注意这些代码是扣出来的，被压缩过
+
 Blockly.Blocks.draw_move = {
     init: function() {
         var a = [["move forward by", "forward"], ["move backward by", "backward"]];
@@ -46,10 +48,10 @@ Blockly.Blocks.draw_move = {
         this.setNextStatement(!0)
     }
 },
-Blockly.Python.draw_move = function(a) {
+Blockly.Python.draw_move = function(block) {
     Blockly.Python.definitions_.import_turtle = "import turtle\nturtle=turtle.Turtle()";
-    var b = Blockly.Python.valueToCode(a, "VALUE", Blockly.Python.ORDER_NONE) || "0";
-    return "turtle." + a.getFieldValue("DIR") + "(" + b + ")\n"
+    var b = Blockly.Python.valueToCode(block, "VALUE", Blockly.Python.ORDER_NONE) || "0";
+    return "turtle." + block.getFieldValue("DIR") + "(" + b + ")\n"
 }
 ,
 Blockly.Blocks.draw_turn = {

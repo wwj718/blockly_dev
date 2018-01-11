@@ -29,7 +29,7 @@
         this.setNextStatement(!0)
     }
   },
-  Blockly.Python.draw_stamp = function(a) {
+  Blockly.Python.draw_stamp = function(block) {
     Blockly.Python.definitions_.import_turtle = "import turtle\nturtle=turtle.Turtle()";
     return "turtle.stamp()\n"
   }
