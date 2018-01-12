@@ -164,6 +164,8 @@
 
 >  Still don't understand? No problem. Just use ORDER_ATOMIC as the order on every call to valueToCode, and use ORDER_NONE as the order for the final return statement on every value block. The resulting code will be infested with needless parentheses, but is guaranteed to be correct.
 
+ORDER只关乎优先级问题，不影响其他，一般而言，对外输出值的时候，把值包在一起(ORDER_NONE)
+
 ### 块范例
 [Custom Blocks: Block Paradigms](https://developers.google.com/blockly/guides/create-custom-blocks/block-paradigms)
 
