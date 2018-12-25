@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blocks for Open edX --by elite</title>
+    <script src="../../blockly_compressed.js"></script>
+    <script src="../../blocks_compressed.js"></script>
+    <script src="../../python_compressed.js"></script>
+    <script src="./storage.js"></script>
+    <script src="../../msg/js/en.js"></script>
+    <script src="./blocks.js" type="text/javascript"></script>
+    <script src="./demo_xml.js" type="text/javascript"></script>
+    <script
+      src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"
+      type="text/javascript"
+    ></script>
+
+    <style>
+      body {
+        background-color: #fff;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: normal;
+        font-size: 140%;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      题目包住整体： https://blog.just4fun.site/webduino-analysis.html
+      Python的代码不是必须的
+      允许测试
+
+      js运行Python skulpt 校验
+        python2.7
+
+
+      写几个例子
+      https://blockly-demo.appspot.com/static/demos/code/index.html  完整的，自定意义的包装。 最终
+
+      分组
+        数字
+        运算
+        逻辑
+        比较
+        检验工具组
+
+
+      答案 可以是一个函数
+      答案
+
+      文档
+
+      Python评估(随机出题)
+        https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/custom_python.html#write-your-own-grader-problem
+          案例： https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/custom_python.html#example-with-the-script-tag
+          不同输入的反馈
+            https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/custom_python.html#example-of-the-check-function-returning-a-dictionary
+            动态恢复类型 customresponse
+          随机 https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/custom_python.html#create-a-randomized-custom-python-evaluated-input-problem
+      使用
+        选择 高级 Select Custom Python-Evaluated Input
+          Select Custom Python-Evaluated Input
+
+      作为chrome 插件，替换当前页面的Python标签，注入进入
+
+
+
+      todo
+        需要在图形中明确题目类型
+
+        题型积木组
+          https://edx.readthedocs.io/projects/edx-partner-course-staff/en/latest/exercises_tools/custom_python.html#create-a-randomized-custom-python-evaluated-input-problem
+
+        主体是Python(文本)，将xml是为模版(文本)， js是处理这些的工具
+
+      全球化
+        https://github.com/google/blockly/blob/master/demos/code/index.html
+        https://blockly-demo.appspot.com/static/demos/code/index.html code编辑器
+
+      持久化
+      导出和导入 xml
+
+      https://developers.google.com/blockly/guides/get-started/web
+        从本地加载，或者线上例子 localstorage online leancloud
+
+      todo
+        下拉菜单选择 题型
+        导入导出
+    -->
+
+    <h1>Blocks for Open edX --by elite</h1>
+
+    <p>
+      <button id="clipboard_btn" class="btn" data-clipboard-text="hello">
+        复制题目
+      </button>
+
+      <span>选择题型:</span>
+      <select id="mySel">
+        <option value="null">空</option>
+        <option value="multiplechoiceresponse">多选题</option>
+        <option value="numericalresponse">填空题</option>
+      </select>
+      <button onclick="download_xml()">导出</button> <span>导入:</span>
+      <input type="file" id="files" name="files[]" />
+    </p>
+
+    <div id="blocklyDiv" style="height: 600px; width: 1200px;"></div>
+
+    <xml id="toolbox" style="display: none">
+      <category name="题目" colour="#3333ff">
+        <block type="problem"></block> <block type="numericalresponse"></block>
+        <block type="multiplechoiceresponse"></block>
+        <block type="choice"></block>
+      </category>
+      <category name="html" colour="#3333ff">
+        <block type="html_p"></block>
+      </category>
+      <category name="utils" colour="#3333ff">
+        <block type="format_number"></block>
+      </category>
+      <category name="逻辑" colour="%{BKY_LOGIC_HUE}">
+        <block type="controls_if"></block> <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_boolean"></block> <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+      </category>
+      <category name="数学" colour="%{BKY_MATH_HUE}">
+        <block type="math_number"> <field name="NUM">123</field> </block>
+        <block type="math_arithmetic">
+          <value name="A">
+            <shadow type="math_number"> <field name="NUM">1</field> </shadow>
+          </value>
+          <value name="B">
+            <shadow type="math_number"> <field name="NUM">1</field> </shadow>
+          </value>
+        </block>
+        <block type="math_single">
+          <value name="NUM">
+            <shadow type="math_number"> <field name="NUM">9</field> </shadow>
+          </value>
+        </block>
+        <block type="math_trig">
+          <value name="NUM">
+            <shadow type="math_number"> <field name="NUM">45</field> </shadow>
+          </value>
+        </block>
+        <block type="math_constant"></block>
+        <block type="math_number_property">
+          <value name="NUMBER_TO_CHECK">
+            <shadow type="math_number"> <field name="NUM">0</field> </shadow>
+          </value>
+        </block>
+        <block type="math_round">
+          <value name="NUM">
+            <shadow type="math_number"> <field name="NUM">3.1</field> </shadow>
+          </value>
+        </block>
+        <block type="math_on_list"></block>
+        <block type="math_modulo">
+          <value name="DIVIDEND">
+            <shadow type="math_number"> <field name="NUM">64</field> </shadow>
+          </value>
+          <value name="DIVISOR">
+            <shadow type="math_number"> <field name="NUM">10</field> </shadow>
+          </value>
+        </block>
+        <block type="math_constrain">
+          <value name="VALUE">
+            <shadow type="math_number"> <field name="NUM">50</field> </shadow>
+          </value>
+          <value name="LOW">
+            <shadow type="math_number"> <field name="NUM">1</field> </shadow>
+          </value>
+          <value name="HIGH">
+            <shadow type="math_number"> <field name="NUM">100</field> </shadow>
+          </value>
+        </block>
+        <block type="math_random_int">
+          <value name="FROM">
+            <shadow type="math_number"> <field name="NUM">1</field> </shadow>
+          </value>
+          <value name="TO">
+            <shadow type="math_number"> <field name="NUM">100</field> </shadow>
+          </value>
+        </block>
+        <block type="math_random_float"></block>
+      </category>
+
+      <!--
+        <category name="循环" colour="%{BKY_LOOPS_HUE}">
+            <block type="controls_repeat_ext">
+              <value name="TIMES">
+                <shadow type="math_number">
+                  <field name="NUM">10</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="controls_whileUntil"></block>
+            <block type="controls_for">
+              <value name="FROM">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+              <value name="TO">
+                <shadow type="math_number">
+                  <field name="NUM">10</field>
+                </shadow>
+              </value>
+              <value name="BY">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="controls_forEach"></block>
+            <block type="controls_flow_statements"></block>
+        </category>
+      -->
+      <category
+        name="变量"
+        colour="%{BKY_VARIABLES_HUE}"
+        custom="VARIABLE"
+      ></category>
+      <category
+        name="函数"
+        colour="%{BKY_PROCEDURES_HUE}"
+        custom="PROCEDURE"
+      ></category>
+    </xml>
+
+    <script>
+      function change_handle() {
+        var code = showCode();
+        document
+          .getElementById("clipboard_btn")
+          .setAttribute("data-clipboard-text", code);
+      }
+
+      function init_workspace() {
+        var demoWorkspace = Blockly.inject("blocklyDiv", {
+          media: "../../media/",
+          toolbox: document.getElementById("toolbox"),
+          // https://github.com/google/blockly/blob/master/demos/code/code.js#L414
+          zoom: { controls: true, wheel: true }
+        });
+        window.setTimeout(BlocklyStorage.restoreBlocks, 0); //定时存储，也可模仿它来上传状态  storage.js->Blockly.getMainWorkspace()，可以加上workspace参数
+        BlocklyStorage.backupOnUnload(); // listener on the page's unload event  //拉取状态同步到本地
+        window.demoWorkspace = demoWorkspace;
+        demoWorkspace.addChangeListener(change_handle);
+        new ClipboardJS(".btn"); // 初始化剪切板工具
+      }
+
+      window.onload = init_workspace;
+      window.Blockly = Blockly;
+      function showCode() {
+        // Generate JavaScript code and display it.
+        // Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+        var origin_code = Blockly.Python.workspaceToCode(demoWorkspace);
+        var code = `<problem>\n<script type="loncapa/python">\n${origin_code}`;
+        console.log(code);
+        return code;
+        // alert(code)
+      }
+
+      function copeCode() {
+        console.log("copeCode");
+      }
+      // https://developers.google.com/blockly/guides/get-started/web#importing_and_exporting_blocks
+
+      function import_xml(xml_text) {
+        demoWorkspace.clear();
+        var xml = Blockly.Xml.textToDom(xml_text);
+        Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+      }
+
+      function handleFileSelect(evt) {
+        window.files = evt.target.files; // FileList object
+        var reader = new FileReader();
+        reader.readAsText(files[0], "UTF-8");
+        reader.onload = function(e) {
+          var filedata = this.result;
+          import_xml(filedata);
+        };
+      }
+
+      document
+        .getElementById("files")
+        .addEventListener("change", handleFileSelect, false);
+
+      // export xml
+      function download_xml() {
+        var xml = Blockly.Xml.workspaceToDom(demoWorkspace);
+        var xml_text = Blockly.Xml.domToText(xml);
+        var blob = new Blob([xml_text], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, "edx_problem_blocks.xml");
+      }
+
+      // select change
+      var sel = document.getElementById("mySel");
+      sel.onchange = function() {
+        var selectedvalue = this.options[this.selectedIndex].value;
+        if (selectedvalue == "multiplechoiceresponse") {
+          import_xml(xml_multiplechoiceresponse_demo);
+        }
+        if (selectedvalue == "numericalresponse") {
+          import_xml(xml_numericalresponse_demo);
+        }
+      };
+    </script>
+  </body>
+</html>
