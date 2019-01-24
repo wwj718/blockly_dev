@@ -1,4 +1,8 @@
 # 使用
+我们需要在本地运行https服务。
+
+先生成本地证书:
+
 `openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes`
 
 
@@ -11,7 +15,7 @@ simple_https_server.py
 # python3
 import http.server, ssl
 
-server_address = ('localhost', 8002)
+server_address = ('localhost', 8601)
 httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
 httpd.socket = ssl.wrap_socket(httpd.socket,
                                server_side=True,
@@ -22,5 +26,5 @@ httpd.serve_forever()
 
 在根目录运行运行: `➜  blockly_dev git:(master) ✗ python3 simple_https_server.py`
 
-打开: `https://127.0.0.1:8002/src/`
+打开: `https://127.0.0.1:8601/src/scratch3-adapter-4-blockly/`
 
