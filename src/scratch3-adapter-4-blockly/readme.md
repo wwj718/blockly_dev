@@ -1,10 +1,6 @@
 # 使用
 我们需要在本地运行https服务。
 
-先生成本地证书:
-
-`openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes`
-
 
 在项目根目录创建Python文件
 
