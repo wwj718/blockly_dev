@@ -49,6 +49,6 @@ Blockly.Python.control_if = function(a) {
 # todo
 本目录下的index.html需要closure的支持
 
-或者先build:python builf.py
+或者先build:python build.py
 
 或者获取 npm install scratch-blocks 获取编译好的
