@@ -20,18 +20,16 @@ cd gh-pages/playgrounds/tests/
 
 # 问题
 
-### 关于scratch-blocks是够可以generate为code
+### 关于scratch-blocks是够可以generate python code
 *  [Generators - Support & Documentation ](https://github.com/LLK/scratch-blocks/issues/691)
 
 scratch-blocks已经重命名Blockly中使用的所有块
-
-我们已经决定确保我们继续支持生成器，尽管我们强烈建议大多数用户使用scratch-vm
 
 之前有过一次提交被清理了: [Remove all generators and update build.py](https://github.com/LLK/scratch-blocks/commit/0c4d175184ffa21da287a37585e01bc7531b5d15)
 
 [Add generators](https://github.com/LLK/scratch-blocks/pull/787/files)
 
-# 自定定义generator
+# 自定义generator
 
 引入playgrounds目录下的:`<script src="../python_compressed.js"></script>`
 
